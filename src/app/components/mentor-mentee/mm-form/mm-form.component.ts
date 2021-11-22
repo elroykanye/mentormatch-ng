@@ -1,12 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {Role} from "../../../models/entity/role";
 import {FormOption} from "../../../models/entity/form-option";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
-import {
-  CMR_CODE,
-  WA_PREFIX
-} from "../../../models/constants/endpoints";
+import {CMR_CODE, WA_PREFIX} from "../../../models/constants/endpoints";
 import {MenteeService} from "../../../services/mentee.service";
 import {MentorService} from "../../../services/mentor.service";
 import {Mentor} from "../../../models/entity/mentor";
@@ -35,24 +31,15 @@ export class MmFormComponent implements OnInit {
     this.levels = LEVELS;
 
     this.mmForm = new FormGroup({
-      username: new FormControl('', [
-        Validators.required,
-        Validators.minLength(10),
-        Validators.maxLength(10)]),
+      username: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]),
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('',Validators.required),
-      email: new FormControl('', [
-        Validators.required,
-        Validators.email]),
-      phoneNumber: new FormControl('', [
-        Validators.required,
-        Validators.minLength(9),
-        Validators.maxLength(15)]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      phoneNumber: new FormControl('', [Validators.required, Validators.minLength(9), Validators.maxLength(15)]),
       gender: new FormControl('', Validators.required),
       department: new FormControl('', Validators.required),
       level: new FormControl('', Validators.required),
       role: new FormControl('', Validators.required),
-      image: new FormControl('', Validators.required),
       about: new FormControl('', Validators.required),
     });
   }
@@ -91,7 +78,6 @@ export class MmFormComponent implements OnInit {
       wa_number: waNumber,
       department: form.get("department")?.value,
       level: form.get("level")?.value,
-      image: "", // TODO add img path
       about: form.get("about")?.value
     }
 
