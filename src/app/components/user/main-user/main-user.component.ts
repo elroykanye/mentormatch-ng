@@ -71,13 +71,9 @@ export class MainUserComponent implements AfterViewInit {
   }
 
   getImage(user: Mentor | Mentee): string {
-    if (user.image == null || user.image == '') {
-      if (user.gender == "M" || user.gender == "O") {
-        return  "assets/img/avatar/avatar-boy.png";
-      } else return "assets/img/avatar/avatar-girl.png";
-    } else {
-      return user.image;
-    }
+    if (user.gender == "M" || user.gender == "O") {
+      return  "assets/img/avatar/avatar-boy.png";
+    } else return "assets/img/avatar/avatar-girl.png";
   }
 
   /** Announce the change in sort state for assistive technology. */
