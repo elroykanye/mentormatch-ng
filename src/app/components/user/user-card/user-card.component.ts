@@ -20,7 +20,6 @@ export class UserCardComponent implements OnInit {
       email: "elroykanye@gmail.com",
       first_name: "Elroy",
       gender: "M",
-      image: "",
       level: "400",
       phone_number: "237672270627",
       previous_school: "GBHS Ndop",
@@ -39,13 +38,9 @@ export class UserCardComponent implements OnInit {
   }
 
   getUserImage(): string {
-    if (this.user.image == null || this.user.image == '') {
-      if (this.user.gender == "M" || this.user.gender == "O") {
-        return  "assets/img/avatar/avatar-boy.png";
-      } else return "assets/img/avatar/avatar-girl.png";
-    } else {
-      return this.user.image;
-    }
+    if (this.user.gender == "M" || this.user.gender == "O") {
+      return  "assets/img/avatar/avatar-boy.png";
+    } else return "assets/img/avatar/avatar-girl.png";
   }
 
 }

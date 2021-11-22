@@ -11,6 +11,5 @@ export const DEFAULT_USER: Mentee | Mentor = {
   wa_number: "wa.me/237672270627",
   department: "COME",
   level: "400",
-  image: null,
   about: "I am a crazy developer"
 }
