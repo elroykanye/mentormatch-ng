@@ -25,10 +25,8 @@ export class MmService {
       'Content-Type': 'application/json'
     })
   }
-  http: HttpClient;
-  constructor(http: HttpClient) {
-    this.http = http;
-  }
+
+  constructor(private http: HttpClient) {}
 
   public addMm(mmBody: Mentee | Mentor, role: string): Observable<any> {
     let endpoint: string = role == "mentor" ? MENTOR_ENDPOINT_ADD : MENTEE_ENDPOINT_ADD;

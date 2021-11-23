@@ -3,8 +3,6 @@ import {FormOption} from "../../../models/entity/form-option";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {CMR_CODE, WA_PREFIX} from "../../../models/constants/endpoints";
-import {MenteeService} from "../../../services/mentee.service";
-import {MentorService} from "../../../services/mentor.service";
 import {Mentor} from "../../../models/entity/mentor";
 import {Mentee} from "../../../models/entity/mentee";
 import {MmService} from "../../../services/mm.service";
@@ -23,8 +21,9 @@ export class MmFormComponent implements OnInit {
   levels: string[];
   departments: FormOption[];
   mmForm: FormGroup;
+  isMentor: boolean;
 
-  constructor(private http: HttpClient, private menteeService: MenteeService, private mentorService: MentorService, private mmService: MmService) {
+  constructor(private http: HttpClient, private mmService: MmService) {
     this.departments = DEPARTMENTS;
     this.roles = ROLES;
     this.genders = GENDERS;
@@ -41,14 +40,21 @@ export class MmFormComponent implements OnInit {
       level: new FormControl('', Validators.required),
       role: new FormControl('', Validators.required),
       about: new FormControl('', Validators.required),
+      previousSchool: new FormControl(''),
     });
+
+    this.isMentor = this.mmForm.get("role")?.value == "mentor";
   }
 
   ngOnInit(): void {}
 
   onSubmit() {
-    let mmBody: Mentee | Mentor = this.prepareRequest(this.mmForm);
+    let mmBody: Mentee | Mentor = MmFormComponent.prepareRequest(this.mmForm);
     let role: string = this.mmForm.get("role")?.value;
+
+    console.log("---Request Body---")
+    console.log(mmBody);
+    console.log("---Request Body---")
 
     this.mmService.addMm(mmBody, role).subscribe((response: Response) => {
         this.data = response.json();
@@ -59,17 +65,17 @@ export class MmFormComponent implements OnInit {
     console.log("---Response Body---")
   }
 
-  private prepareRequest(form: FormGroup): Mentor | Mentee {
+  private static prepareRequest(form: FormGroup): Mentor | Mentee {
     let role: string = form.get("role")?.value;
     let mentee: Mentee;
     let mentor: Mentor;
 
     let phoneNumber: string = form.get("phoneNumber")?.value;
-    let waNumber = this.fixWaNumber(phoneNumber);
-    let gender = this.fixGender(form.get("gender")?.value);
+    let waNumber = MmFormComponent.fixWaNumber(phoneNumber);
+    let gender = MmFormComponent.fixGender(form.get("gender")?.value);
 
     mentor = {
-      username: form.get("regNo")?.value,
+      username: form.get("username")?.value,
       first_name: form.get("firstName")?.value,
       second_name: form.get("lastName")?.value,
       email: form.get("email")?.value,
@@ -91,7 +97,7 @@ export class MmFormComponent implements OnInit {
     return mentor;
   }
 
-  private fixPhoneNumber(phoneNumber: string): string {
+  private static fixPhoneNumber(phoneNumber: string): string {
     if (phoneNumber.length == 9) {
       return CMR_CODE.concat(phoneNumber);
     } else if(
@@ -103,14 +109,14 @@ export class MmFormComponent implements OnInit {
     }
   }
 
-  private fixWaNumber(phoneNumber: string): string {
+  private static fixWaNumber(phoneNumber: string): string {
     if (phoneNumber.length < 12) {
-      phoneNumber = this.fixPhoneNumber(phoneNumber);
+      phoneNumber = MmFormComponent.fixPhoneNumber(phoneNumber);
     }
     return WA_PREFIX.concat(phoneNumber);
   }
 
-  private fixGender(value: string): string {
+  private static fixGender(value: string): string {
     return value.charAt(0).toUpperCase();
   }
 }
